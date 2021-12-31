@@ -1,11 +1,11 @@
 import React from "react";
 
-type PropsType = {
+export type OnOffPropsType = {
     on: boolean,
     onChange: (on: boolean) => void
 }
 
-export function OnOff(props: PropsType) {
+export function OnOff(props: OnOffPropsType) {
 
     const onStyle = {
         width: '60px',
