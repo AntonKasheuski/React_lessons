@@ -9,18 +9,32 @@ export default {
 }
 
 const callback = action('accordion mode change event fired');
+const itemClickCallback = action('some item was clicked')
 
 const Template: Story<AccordionPropsType> = (args) => <Accordion {...args} />;
 
 export const MenuCollapsedMode = Template.bind({});
 MenuCollapsedMode.args = {
-    titleValue: 'Menu',
+    titleValue: 'Users',
     collapsed: true,
-    onChange: callback
+    onChange: callback,
+    items: []
+}
+
+export const MenuUncollapsedMode = () => {
+    return <Accordion titleValue={'Users'} collapsed={false} onChange={callback}
+                      items={[{title: "Dimych", value: 1}, {title: "Valera", value: 2}]}
+                      onClick={itemClickCallback}
+    />
 }
 
 export const ModeChanging = () => {
     const [value, setValue] = useState<boolean>(true);
-
-    return <Accordion titleValue={'Menu'} collapsed={value} onChange={ () => {setValue(!value)}} />
+    return <Accordion titleValue={'Users'} collapsed={value} onChange={ () => {setValue(!value)}}
+                      items={[
+                          {title: "Dimych", value: 1},
+                          {title: "Valera", value: 2}
+                      ]}
+                      onClick={ (value) => {alert(`user with ID ${value} `)} }
+    />
 }

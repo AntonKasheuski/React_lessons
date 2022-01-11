@@ -1,9 +1,16 @@
 import React from "react";
 
+type ItemType = {
+    title: string
+    value: any
+}
+
 export type AccordionPropsType = {
-    titleValue: string,
-    collapsed: boolean,
+    titleValue: string
+    collapsed: boolean
     onChange: () => void
+    items: ItemType[]
+    onClick: (value: any) => void
 }
 
 function Accordion(props: AccordionPropsType) {
@@ -15,7 +22,7 @@ function Accordion(props: AccordionPropsType) {
                 collapsed={props.collapsed}
                 onChange={props.onChange}
             />
-            {!props.collapsed && <AccordionBody/>}
+            {!props.collapsed && <AccordionBody items={props.items} onClick={props.onClick} />}
         </div>
     )
 }
@@ -34,12 +41,15 @@ function AccordionTitle(props: AccordionTitlePropsType) {
     )
 }
 
-function AccordionBody() {
+export type AccordionBodyPropsType = {
+    items: ItemType[]
+    onClick: (value: any) => void
+}
+
+export function AccordionBody(props: AccordionBodyPropsType) {
     console.log("AccordionBody rendering")
     return <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
+        { props.items.map( (i, index) => <li key={index} onClick={() => props.onClick(i.value)}>{i.title}</li>) }
     </ul>
 }
 
