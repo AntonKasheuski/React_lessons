@@ -1,9 +1,11 @@
 import React, {useState, KeyboardEvent} from "react";
 import s from './Select.module.css';
 
-type ItemType = {
+export type ItemType = {
     title: string
     value: any
+    country?: number
+    citizensCount?: number
 }
 
 export type SelectPropsType = {
@@ -53,14 +55,14 @@ export function Select(props: SelectPropsType) {
 
     return (
         <>
-            <select>
+            {/*<select>
                 <option value="">Minsk</option>
                 <option value="">Vilnius</option>
                 <option value="">Riga</option>
                 <option value="">Moscow</option>
                 <option value="">Kiev</option>
                 <option value="">Warsaw</option>
-            </select>
+            </select>*/}
             <div onKeyUp={onKeyPressCallback} tabIndex={0}>
                 <span className={s.mainStyle}
                       onClick={onHeaderClickCallback}>
