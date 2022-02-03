@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import {Select, ItemType, SelectPropsType} from "../components/select/Select";
 
 export default {
@@ -80,7 +80,7 @@ export const HelpsToReactMemoExample = () => {
 
 const CityList = (props: SelectPropsType) => {
     console.log("Select rendered")
-    return <Select items={props.items} />
+    return <Select items={props.items}/>
 }
 
 const CityListWithReactMemo = React.memo(CityList)
@@ -103,24 +103,32 @@ export const UseMemoHomeWork = () => {
         {title: 'Zhitomir', value: 12, country: 3, citizensCount: 0.4},
     ])
 
-    const citiesOfBelarus = useMemo( () => {
+    const citiesOfBelarus = useMemo(() => {
         let filteredCities = cities.filter(c => c.country === 1).map((c, i) => ({...c, value: i + 1}))
         console.log(filteredCities)
         return filteredCities
     }, [cities])
-    const citiesWith_o_Letter = useMemo( () => {
-        let filteredCities = cities.filter(c => c.title.toLowerCase().indexOf('o') > -1).map((c, i) => ({...c, value: i + 1}))
+    const citiesWith_o_Letter = useMemo(() => {
+        let filteredCities = cities.filter(c => c.title.toLowerCase().indexOf('o') > -1).map((c, i) => ({
+            ...c,
+            value: i + 1
+        }))
         console.log(filteredCities)
         return filteredCities
     }, [cities])
-    const moreThen1mlnCitizens = useMemo( () => {
-        let filteredCities = cities.filter(c => c.citizensCount ? c.citizensCount  >= 1 : "").map((c, i) => ({...c, value: i + 1}))
+    const moreThen1mlnCitizens = useMemo(() => {
+        let filteredCities = cities.filter(c => c.citizensCount ? c.citizensCount >= 1 : "").map((c, i) => ({
+            ...c,
+            value: i + 1
+        }))
         console.log(filteredCities)
         return filteredCities
     }, [cities])
 
     return <>
-        <button onClick={() => {setCounter(counter + 1)}}>{counter}</button>
+        <button onClick={() => {
+            setCounter(counter + 1)
+        }}>{counter}</button>
         <hr></hr>
         <div style={{display: "flex", flexDirection: "row"}}>
             <div style={{margin: "40px"}}>
@@ -136,5 +144,51 @@ export const UseMemoHomeWork = () => {
                 {"Cities with more than 1 million of citizens"}<CityListWithReactMemo items={moreThen1mlnCitizens}/>
             </div>
         </div>
+    </>
+}
+
+//-------------------------------------------------------------------------------
+
+const BooksSecret = (props: { books: Array<string>, addBook: () => void }) => {
+    console.log('BooksSecret')
+    return <div>
+        <button onClick={() => {
+            props.addBook()
+        }}>add book
+        </button>
+        {props.books.map((book, i) => <div key={i}>{book}</div>)}
+    </div>
+}
+
+const Books = React.memo(BooksSecret)
+
+export const LikeUseCallback = () => {
+    console.log("LikeUseCallback")
+    const [counter, setCounter] = useState(0);
+    const [books, setBooks] = useState(['React', 'JS', 'CSS', 'HTML']);
+
+    let filteredBooks = useMemo(() => {
+        return books.filter(b => b.toLowerCase().indexOf('a') > -1)
+    }, [books])
+
+/*    const memoisedAddBook = useMemo( () => {
+        return () => {
+            console.log('addBookCallback')
+            setBooks([...books, 'Angular' + new Date().getTime()])
+        }
+    }, [books])*/
+
+    const memoisedAddBook = useCallback( () => {
+            console.log('addBookCallback')
+            setBooks([...books, 'Angular' + new Date().getTime()])
+    }, [books])
+
+    return <>
+        <button onClick={() => {
+            setCounter(counter + 1)
+        }}>+
+        </button>
+        {counter}
+        <Books books={filteredBooks} addBook={memoisedAddBook}/>
     </>
 }
