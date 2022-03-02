@@ -44,9 +44,12 @@ export const SetTimeoutExample = () => {
 
     useEffect(() => {
         console.log('setTimeout')
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             document.title = counter.toString()
         }, 1000)
+        return () => {
+            clearTimeout(timeoutId)
+        }
     }, [counter])
 
     return <>
@@ -68,10 +71,13 @@ export const SetIntervalExample = () => {
     console.log('SetIntervalExample')
 
     useEffect(() => {
-        setInterval(() => {
+        const intervalId = setInterval(() => {
             //console.log('counter ' + counter)
             setCounter(a => a + 1)
         }, 1000)
+        return () => {
+            clearInterval(intervalId)
+        }
     }, [])
 
     return <>
